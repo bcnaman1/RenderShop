@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pages-additions.css" />
+    <title>Render Shop | Build Planner</title>
+    <link rel="stylesheet" href="ai-bubble.css" />
+    <link rel="stylesheet" href="theme.css" />
+  </head>
+  <body class="fixed-page">
+    <nav class="navbar">
+      <a class="logo" href="index.html"
+        ><span class="logo-icon" aria-hidden="true"
+          ><svg viewBox="0 0 32 32" focusable="false">
+            <path d="M8 24V8h8a5 5 0 0 1 0 10H8m7-5 8 11" />
+            <path d="M21 8h3M23 5v6" /></svg></span
+        ><span class="logo-wordmark"><strong>RENDER</strong><small>SHOP / PC PARTS</small></span></a
+      >
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="catalog.html">Parts</a></li>
+        <li><a class="active" href="builder.html">Build planner</a></li>
+        <li><a href="payment.html">Checkout</a></li>
+      </ul>
+      <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">Dark</button>
+    </nav>
+    <main class="page-main app-page">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Build planner</p>
+          <h1>Plan your PC</h1>
+          <p>Add parts from the catalog and review common compatibility checks.</p>
+        </div>
+        <a class="small-link" href="catalog.html">Back to parts</a>
+      </div>
+      <div class="builder-layout builder-page-layout">
+        <div class="current-build card">
+          <h3>Selected parts</h3>
+          <div id="buildList" class="build-list">
+            <p class="empty-msg">No parts selected yet. Add parts from the catalog.</p>
+          </div>
+          <div class="build-summary is-hidden" id="buildSummary">
+            <p><strong>Estimated price:</strong> <span id="totalPrice">$0</span></p>
+            <p>
+              <strong>Compatibility:</strong>
+              <span id="compatStatus">Not checked</span>
+            </p>
+          </div>
+          <button class="btn btn-danger is-hidden" id="clearBuildBtn">Clear selections</button>
+        </div>
+        <div class="compat-notice card">
+          <h3>Compatibility notes</h3>
+          <ul id="compatMessages">
+            <li>Select parts to see compatibility checks.</li>
+          </ul>
+          <a href="catalog.html" class="btn btn-primary builder-add-button">Add more parts</a>
+        </div>
+      </div>
+    </main>
+    <template id="build-item-template"
+      ><div class="build-item">
+        <span class="build-item-name"></span><span class="part-price build-item-price"></span
+        ><button class="remove-part" type="button" aria-label="Remove part">&times;</button>
+      </div></template
+    >
+    <template id="compat-message-template"><li></li></template>
+    <template id="build-empty-template"><p class="empty-msg">No parts selected yet. Start picking below!</p></template>
+    <template id="compat-empty-template"><li>Select parts to see compatibility checks.</li></template>
+    <div class="core-chat">
+      <button class="core-chat-launcher" type="button" aria-expanded="false" aria-controls="coreChatPanel">
+        <span class="core-chat-mark">C</span><span>Ask Core</span>
+      </button>
+      <section class="core-chat-panel" id="coreChatPanel" hidden aria-label="Core PC parts assistant">
+        <header class="core-chat-header" title="Drag to move">
+          <div><strong>Core</strong><small>PC parts assistant</small></div>
+          <div class="core-chat-header-actions">
+            <button class="core-chat-minimize" type="button" aria-label="Minimize chat">&minus;</button
+            ><button class="core-chat-close" type="button" aria-label="Close chat">&times;</button>
+          </div>
+        </header>
+        <div class="core-chat-messages" aria-live="polite">
+          <div class="core-chat-message assistant">
+            Tell me what you are building, your budget, or which part you are unsure about.
+          </div>
+        </div>
+        <form class="core-chat-form">
+          <textarea rows="2" placeholder="Ask about a part or build..." aria-label="Message Core"></textarea
+          ><button type="submit">Send</button>
+        </form>
+        <div class="core-chat-note">Uses Groq's free API tier when GROQ_API_KEY is configured.</div>
+      </section>
+    </div>
+    <footer class="footer" aria-hidden="true"></footer>
+    <script src="script.js"></script>
+    <script src="ai-bubble.js"></script>
+    <script src="theme.js"></script>
+  </body>
+</html>

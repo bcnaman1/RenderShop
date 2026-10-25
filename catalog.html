@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="pages-additions.css" />
+    <title>Render Shop | Parts Catalog</title>
+    <link rel="stylesheet" href="ai-bubble.css" />
+    <link rel="stylesheet" href="theme.css" />
+    <link rel="stylesheet" href="inspection.css" />
+  </head>
+  <body class="fixed-page">
+    <nav class="navbar">
+      <a class="logo" href="index.html"
+        ><span class="logo-icon" aria-hidden="true"
+          ><svg viewBox="0 0 32 32" focusable="false">
+            <path d="M8 24V8h8a5 5 0 0 1 0 10H8m7-5 8 11" />
+            <path d="M21 8h3M23 5v6" /></svg></span
+        ><span class="logo-wordmark"><strong>RENDER</strong><small>SHOP / PC PARTS</small></span></a
+      >
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="catalog.html">Parts</a></li>
+        <li><a href="builder.html">Build planner</a></li>
+        <li><a href="payment.html">Checkout</a></li>
+      </ul>
+      <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">Dark</button>
+    </nav>
+    <main class="page-main app-page">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Catalog</p>
+          <h1>PC parts</h1>
+          <p>Choose a part to add it to the build planner.</p>
+        </div>
+        <a class="small-link" href="builder.html">Open build planner</a>
+      </div>
+      <div class="category-filters">
+        <button class="cat-btn active" data-cat="all">All parts</button
+        ><button class="cat-btn" data-cat="cpu" data-label="Processor">CPUs</button
+        ><button class="cat-btn" data-cat="gpu" data-label="Graphics card">GPUs</button
+        ><button class="cat-btn" data-cat="ram" data-label="Memory">Memory</button
+        ><button class="cat-btn" data-cat="mobo" data-label="Motherboard">Motherboards</button
+        ><button class="cat-btn" data-cat="storage" data-label="Storage">Storage</button
+        ><button class="cat-btn" data-cat="psu" data-label="Power supply">Power supplies</button
+        ><button class="cat-btn" data-cat="case" data-label="Case">Cases</button
+        ><button class="cat-btn" data-cat="cooling" data-label="Cooling">Cooling</button>
+      </div>
+      <section class="catalog-filter-panel" aria-label="Filter parts">
+        <div class="catalog-filter-heading">
+          <strong>Filter parts</strong
+          ><button id="clearFilters" class="filter-reset" type="button">Clear filters</button>
+        </div>
+        <div class="catalog-filter-grid">
+          <label
+            >Price range<select id="priceFilter">
+              <option value="all">Any price</option>
+              <option value="0-250">Under ₹10,000</option>
+              <option value="250-500">₹10,000–₹25,000</option>
+              <option value="500-1000">₹25,000–₹75,000</option>
+              <option value="1000+">Over ₹75,000</option>
+            </select></label
+          ><label
+            >Performance band<select id="performanceFilter">
+              <option value="all">Any performance</option>
+              <option value="entry">Entry</option>
+              <option value="standard">Standard</option>
+              <option value="high">High</option>
+              <option value="extreme">Extreme</option>
+            </select></label
+          ><label
+            >Availability<select id="availabilityFilter">
+              <option value="all">Any availability</option>
+              <option value="in">In stock</option>
+              <option value="low">Low stock</option>
+              <option value="out">Unavailable</option>
+              <option value="preorder">Pre-order</option>
+            </select></label
+          ><label
+            >Sort by<select id="sortFilter">
+              <option value="default">Catalog order</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name: A to Z</option>
+            </select></label
+          >
+        </div>
+        <p id="filterResultCount" class="filter-result-count" aria-live="polite"></p>
+      </section>
+      <div class="parts-grid compact-grid" id="partsGrid"></div>
+    </main>
+    <template id="part-card-template"
+      ><div class="part-card">
+        <div class="part-image-wrap"><img class="part-image" alt="" loading="lazy" /></div>
+        <div class="part-category">
+          <span class="part-icon" aria-hidden="true">
+            <svg data-part-icon="cpu" viewBox="0 0 24 24" focusable="false"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 9h6v6H9zM9 2v4m6-4v4m0 12v4m-6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4"/></svg>
+            <svg data-part-icon="gpu" viewBox="0 0 24 24" focusable="false"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="9" cy="12" r="3"/><path d="M15 9h3m-3 3h3m-3 3h3M6 20v2m12-2v2"/></svg>
+            <svg data-part-icon="ram" viewBox="0 0 24 24" focusable="false"><path d="M3 7h18v9H3zM6 10h2m2 0h2m2 0h2m2 0h1M6 16v3m3-3v3m3-3v3m3-3v3m3-3v3"/></svg>
+            <svg data-part-icon="mobo" viewBox="0 0 24 24" focusable="false"><rect x="4" y="3" width="16" height="18" rx="2"/><rect x="7" y="6" width="6" height="6"/><path d="M15 7h2m-2 3h2M7 16h10m-7-4v4"/></svg>
+            <svg data-part-icon="storage" viewBox="0 0 24 24" focusable="false"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 9h10M7 13h6M17 16h.01"/></svg>
+            <svg data-part-icon="psu" viewBox="0 0 24 24" focusable="false"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m13 6-4 7h3l-1 5 4-7h-3z"/></svg>
+            <svg data-part-icon="case" viewBox="0 0 24 24" focusable="false"><rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="7" r="2"/><path d="M9 13h6m-6 3h4"/></svg>
+            <svg data-part-icon="cooling" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M12 3c3 2 3 5 0 6-3-1-3-4 0-6Zm9 9c-2 3-5 3-6 0 1-3 4-3 6 0Zm-9 9c-3-2-3-5 0-6 3 1 3 4 0 6ZM3 12c2-3 5-3 6 0-1 3-4 3-6 0Z"/></svg>
+          </span><span class="part-category-label"></span>
+        </div>
+        <div class="part-brand"></div>
+        <div class="part-name"></div>
+        <div class="part-specs"></div>
+        <div class="part-price"></div>
+        <div class="part-stock"></div>
+        <div class="part-card-actions">
+          <button class="inspect-part" type="button">Inspect</button><button class="select-part" type="button"></button>
+        </div></div
+    ></template>
+    <template id="inspection-content-template"
+      ><p class="eyebrow">Part inspection</p>
+      <h2 id="inspectionTitle"></h2>
+      <p class="inspection-specs"></p>
+      <div class="inspection-meta">
+        <strong class="inspection-price"></strong><span class="inspection-stock"></span
+        ><span class="inspection-limited" hidden>Limited edition</span>
+      </div>
+      <div class="inspection-grid">
+        <div>
+          <div class="inspection-section-title">Researched price history</div>
+          <div id="priceHistoryPanel"></div>
+        </div>
+        <div>
+          <div class="inspection-section-title">Initial guidance</div>
+          <div class="inspection-verdict"></div>
+          <p id="inspectionAI" class="inspection-ai-copy">
+            Core is checking the part against its price, stock status, and nearby alternatives...
+          </p>
+        </div>
+      </div>
+      <div class="inspection-section-title">Alternatives</div>
+      <div class="inspection-alternatives"></div>
+      <div class="inspection-actions">
+        <button class="btn btn-primary inspection-select" type="button"></button
+        ><button class="btn btn-secondary inspection-ai-button" type="button">Ask Core again</button>
+      </div></template
+    >
+    <template id="price-history-loaded-template">
+      <div class="price-history-loaded">
+        <strong>Researched public history</strong>
+        <p class="history-summary"></p>
+        <div class="research-chart" aria-label="Researched price range from low to high"></div>
+        <div class="research-chart-caption">
+          Indian price range summary. These are sourced low, average, and high observations, not invented daily points.
+        </div>
+        <div class="research-stats"></div>
+        <div class="price-history-links"></div>
+      </div>
+    </template>
+    <template id="price-history-unavailable-template">
+      <div class="price-history-unavailable">
+        <strong>Current catalog price</strong>
+        <p class="history-summary"></p>
+        <div class="research-chart current-price-chart" aria-label="Current catalog price">
+          <div class="research-bar-item">
+            <div class="research-bar-value"></div>
+            <div class="research-bar current"></div>
+            <small>Current</small>
+          </div>
+        </div>
+        <div class="research-chart-caption">This is the current catalog price, not a verified historical trend.</div>
+        <div class="price-history-links"></div>
+      </div>
+      <div class="inspection-price-reference" hidden></div>
+    </template>
+    <template id="price-history-point-template">
+      <div class="research-bar-item">
+        <div class="research-bar-value"></div>
+        <div class="research-bar"></div>
+        <small></small>
+      </div>
+    </template>
+    <template id="price-history-stat-template"><span><small></small><b></b></span></template>
+    <template id="price-history-source-template"
+      ><a href="" target="_blank" rel="noopener noreferrer">Source</a></template
+    >
+    <template id="inspection-alternative-template"
+      ><button class="inspection-alternative" type="button"><span></span><strong></strong></button
+    ></template>
+    <template id="inspection-empty-alternative-template"
+      ><p class="empty-msg">No close alternatives in this category.</p></template>
+    <div class="inspection-backdrop" id="inspectionBackdrop" hidden>
+      <section class="inspection-modal" role="dialog" aria-modal="true" aria-labelledby="inspectionTitle">
+        <button class="inspection-close" type="button" aria-label="Close inspection">&times;</button>
+        <div id="inspectionContent"></div>
+      </section>
+    </div>
+    <div class="core-chat">
+      <button class="core-chat-launcher" type="button" aria-expanded="false" aria-controls="coreChatPanel">
+        <span class="core-chat-mark">C</span><span>Ask Core</span>
+      </button>
+      <section class="core-chat-panel" id="coreChatPanel" hidden aria-label="Core PC parts assistant">
+        <header class="core-chat-header" title="Drag to move">
+          <div><strong>Core</strong><small>PC parts assistant</small></div>
+          <div class="core-chat-header-actions">
+            <button class="core-chat-minimize" type="button" aria-label="Minimize chat">&minus;</button
+            ><button class="core-chat-close" type="button" aria-label="Close chat">&times;</button>
+          </div>
+        </header>
+        <div class="core-chat-messages" aria-live="polite">
+          <div class="core-chat-message assistant">
+            Tell me what you are building, your budget, or which part you are unsure about.
+          </div>
+        </div>
+        <form class="core-chat-form">
+          <textarea rows="2" placeholder="Ask about a part or build..." aria-label="Message Core"></textarea
+          ><button type="submit">Send</button>
+        </form>
+        <div class="core-chat-note">Uses Groq's free API tier when GROQ_API_KEY is configured.</div>
+      </section>
+    </div>
+    <footer class="footer" aria-hidden="true"></footer>
+    <script src="script.js"></script>
+    <script src="ai-bubble.js"></script>
+    <script src="theme.js"></script>
+  </body>
+</html>
